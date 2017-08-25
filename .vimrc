@@ -1,38 +1,99 @@
 set runtimepath+=~/.vim_runtime
 
-source ~/.vim_runtime/vimrcs/basic.vim
-"source ~/.vim_runtime/vimrcs/filetypes.vim
-source ~/.vim_runtime/vimrcs/plugins_config.vim
-source ~/.vim_runtime/vimrcs/extended.vim
+" Sets how many lines of history VIM has to remember
+set history=500
 
-try
-source ~/.vim_runtime/my_configs.vim
-catch
-endtry
+" Avoid garbled characters in Chinese language windows OS
+let $LANG='en'
+set langmenu=en
+source $VIMRUNTIME/delmenu.vim
+source $VIMRUNTIME/menu.vim
+
+"Always show current position
+set ruler
+
+" Height of the command bar
+set cmdheight=4
+
+" A buffer becomes hidden when it is abandoned
+set hid
+
+" Don't redraw while executing macros (good performance config)
+set lazyredraw 
+
+" Ignore case when searching
+set ignorecase
+
+" When searching try to be smart about cases
+set smartcase
+
+" Highlight search results
+set hlsearch
+
+" Makes search act like search in modern browsers
+set incsearch
+
+" Show matching brackets when text indicator is over them
+set showmatch
+" How many tenths of a second to blink when matching brackets
+set mat=2
+
+" No annoying sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+" Add a bit extra margin to the left
+set foldcolumn=1
+
+" Turn backup off, since most stuff is in SVN, git et.c anyway...
+set nobackup
+set nowb
+set noswapfile
+
+" Be smart when using tabs ;)
+set smarttab
+
+" 1 tab == 4 spaces
+set shiftwidth=4
+set tabstop=4
+
+" Nerd Tree
+let g:NERDTreeWinPos = "left"
+let NERDTreeShowHidden=0
+let NERDTreeIgnore = ['\.pyc$', '__pycache__']
+let g:NERDTreeWinSize=30
+let NERDTreeShowHidden=1
+map <leader>nn :NERDTreeToggle<cr>
+map <leader>nb :NERDTreeFromBookmark<Space>
+map <leader>nf :NERDTreeFind<cr>
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+
+
+" Disable scrollbars (real hackers don't use scrollbars for navigation!)
+set guioptions-=r
+set guioptions-=R
+set guioptions-=l
+set guioptions-=L
 
 execute pathogen#infect()
 filetype plugin on
 syntax on
 filetype plugin indent on
 set number
-set ignorecase
-set smartcase
-set hlsearch
-set incsearch
 set magic
-set showmatch
 set ruler
 set ai "Auto indent
 set si "Smart indent
 set nowrap
-"tabs
 set noexpandtab
 set copyindent
 set preserveindent
 set softtabstop=0
 set shiftwidth=4
 set tabstop=4
-
 
 
 set statusline+=%#warningmsg#
@@ -63,13 +124,10 @@ highlight link SyntasticWarningSign SignColumn
 highlight link SyntasticStyleErrorSign SignColumn
 highlight link SyntasticStyleWarningSign SignColumn
 
-"autocmd StdinReadPre * let s:std_in=1
-"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
 
 let g:NERDTreeDirArrows = 1
 let g:NERDTreeDirArrowExpandable = '▸'
@@ -82,8 +140,6 @@ set list
 set listchars=tab:>-
 
 set nocompatible              " be iMproved, required
-"filetype on
-"filetype off                  " required
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -92,22 +148,22 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'dracula/vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'terryma/vim-multiple-cursors'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'scrooloose/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'godlygeek/tabular'
+Plugin 'kien/ctrlp.vim'
+Plugin 'tpope/vim-sensible'
+Plugin 'Valloric/YouCompleteMe'
 
 call vundle#end()
-filetype plugin indent on    " required
 
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
-
-call plug#begin()
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-call plug#end()
 
 let g:nerdtree_tabs_open_on_console_startup=1
 
@@ -116,8 +172,6 @@ set nofoldenable
 syntax enable
 colorscheme dracula
 set encoding=utf8
-
-set runtimepath^=~/.vim/bundle/ctrlp.vim
 
 if has("gui_macvim")
     let macvim_hig_shift_movement = 1
@@ -199,6 +253,8 @@ if has("mac") || has("macunix")
           vmap <D-j> <M-j>
             vmap <D-k> <M-k>
 endif
+
+
 
 func! DeleteTrailingWS()
       exe "normal mz"
