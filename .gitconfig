@@ -1,0 +1,43 @@
+[push]
+    default = simple
+[alias]
+    log1 = log --oneline
+    fix = !git commit --fixup HEAD
+    up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+    undo = reset HEAD~1 --mixed
+    save = !git add -A && git commit -m 'SAVEPOINT'
+    pra = pull --rebase --autostash
+    amend = commit -a --amend
+[rebase]
+    autosquash = true
+[pull]
+    rebase = true
+[credential]
+    helper = osxkeychain
+[color]
+    ui = true
+    diff = true
+[core]
+    editor = /usr/bin/vim
+    pager = diff-so-fancy | less --tabs=4 -RFX
+[diff]
+  tool = default-difftool
+[difftool "default-difftool"]
+  cmd = "~/.vim/mvimgitdiff.sh " $LOCAL $REMOTE
+[color]
+      branch = auto
+      diff = auto
+      status = auto
+[color "branch"]
+      current = yellow reverse
+      local = yellow
+      remote = green
+[color "diff"]
+      meta = yellow bold
+      frag = magenta bold
+      old = red bold
+      new = green bold
+[color "status"]
+      added = yellow
+      changed = green
+      untracked = cyan
